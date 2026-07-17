@@ -11,17 +11,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Install system packages
         run: |
           sudo apt update
           sudo apt install -y python3-pip build-essential git zip unzip openjdk-17-jdk
+
+      - name: Install Python dependencies
+        run: |
           pip install --upgrade pip
           pip install buildozer cython
+
+      - name: Accept Android licenses
+        run: |
+          yes | sdkmanager --licenses || true
 
       - name: Build APK
         run: |
           buildozer init || true
-          buildozer android debug
+          yes | buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
