@@ -5,23 +5,31 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04   # ⬅️ مهم (نه 24)
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install system packages
+      - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y python3-pip build-essential git zip unzip openjdk-17-jdk
+          sudo apt install -y \
+          python3-pip \
+          build-essential \
+          git zip unzip \
+          openjdk-17-jdk \
+          autoconf libtool pkg-config \
+          libffi-dev \
+          libssl-dev \
+          zlib1g-dev
 
-      - name: Install Python dependencies
+      - name: Install Python deps
         run: |
           pip install --upgrade pip
-          pip install buildozer cython
+          pip install buildozer cython==0.29.36
 
-      - name: Accept Android licenses
+      - name: Accept licenses
         run: |
           yes | sdkmanager --licenses || true
 
