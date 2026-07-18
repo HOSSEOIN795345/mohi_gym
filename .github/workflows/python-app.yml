@@ -5,13 +5,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04   # ⬅️ مهم (نه 24)
+    runs-on: ubuntu-22.04   # خیلی مهم
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install system dependencies
+      - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y \
@@ -24,19 +24,14 @@ jobs:
           libssl-dev \
           zlib1g-dev
 
-      - name: Install Python deps
+      - name: Install Python libs
         run: |
           pip install --upgrade pip
-          pip install buildozer cython==0.29.36
-
-      - name: Accept licenses
-        run: |
-          yes | sdkmanager --licenses || true
+          pip install buildozer cython==0.29.33
 
       - name: Build APK
         run: |
-          buildozer init || true
-          yes | buildozer android debug
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
